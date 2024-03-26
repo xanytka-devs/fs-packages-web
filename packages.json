@@ -1,0 +1,6 @@
+{"pkgs":[
+	{"name":"xengine.rendering.opengl", "desc":"Пакет для поддержки отрисовки на OpenGL."},
+	{"name":"xengine.audio", "desc":"Воспроизведение аудио."},
+	{"name":"xengine.io", "desc":"Пакет для использования системных утилит."},
+	{"name":"xengine.rendering.vulkan", "desc":"Пакет для поддержки отрисовки на Vulkan."}
+]}

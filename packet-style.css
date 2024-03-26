@@ -43,14 +43,17 @@ body {
 }
 .packet-create {
   background: #f48136;
-  padding-top: 20px;
+  padding-top: 10px;
+  padding-left: 20px;
   font-weight: normal;
   color: var(--noncontrast-color);
   cursor: pointer;
+  max-width: 20px;
 }
 .link-svg {
   width: 25px;
-  fill: gray;
+  -webkit-filter: invert(1);
+  filter: invert(1);
   margin-left: 10px;
   cursor: pointer;
 }

@@ -22,85 +22,54 @@
     <meta property="og:locale" content="RU-ru" />
     <!--Конец Open Graph тэгов-->
     <link href="packet-style.css" rel="stylesheet" />
+    <script>
+      const json_src = "https://xanytka.ru/p/";
+      var getJSON = function (url, callback) {
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", url, true);
+        xhr.responseType = "json";
+        xhr.onload = function () {
+          var status = xhr.status;
+          if (status === 200) {
+            callback(null, xhr.response);
+          } else {
+            callback(status, xhr.response);
+          }
+        };
+        xhr.send();
+      };
+      getJSON("packages.json", function (err, data) {
+        for (let i = 0; i < data.pkgs.length; i++) {
+          var holder = document.getElementsByClassName("packet-holder")[0];
+          var packet = document.createElement("div");
+          packet.classList.add("packet");
+          var title = document.createElement("h2");
+          title.textContent=data.pkgs[i].name;
+          title.classList.add("small-header");
+          var t_svg = document.createElement("img");
+          t_svg.classList.add("link-svg");
+          t_svg.src="download-solid.svg";
+          t_svg.onclick = function() {
+            window.open(json_src+data.pkgs[i].name+".zip");
+          };
+          title.appendChild(t_svg);
+          packet.appendChild(title);
+          var description = document.createElement("p");
+          description.textContent=data.pkgs[i].desc;
+          description.classList.add("small-txt");
+          packet.appendChild(description);
+          holder.appendChild(packet);
+        }
+      });
+    </script>
   </head>
   <body>
     <h1>Пакеты для XEngine</h1>
     <p>
-      Добро пожаловать в официальный (недоделанный) сайт по дистрибуции пакетов
+      Добро пожаловать в официальный сайт по дистрибуции пакетов
       для XEngine.
     </p>
     <div class="packet-holder">
-      <div class="packet">
-        <h2 class="small-header">
-          xengine.rendering.opengl
-          <svg
-            class="link-svg"
-            title="Получить"
-            onclick="window.open('xengine.rendering.opengl.zip');"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 640 512"
-          >
-            <!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
-            <path
-              d="M579.8 267.7c56.5-56.5 56.5-148 0-204.5c-50-50-128.8-56.5-186.3-15.4l-1.6 1.1c-14.4 10.3-17.7 30.3-7.4 44.6s30.3 17.7 44.6 7.4l1.6-1.1c32.1-22.9 76-19.3 103.8 8.6c31.5 31.5 31.5 82.5 0 114L422.3 334.8c-31.5 31.5-82.5 31.5-114 0c-27.9-27.9-31.5-71.8-8.6-103.8l1.1-1.6c10.3-14.4 6.9-34.4-7.4-44.6s-34.4-6.9-44.6 7.4l-1.1 1.6C206.5 251.2 213 330 263 380c56.5 56.5 148 56.5 204.5 0L579.8 267.7zM60.2 244.3c-56.5 56.5-56.5 148 0 204.5c50 50 128.8 56.5 186.3 15.4l1.6-1.1c14.4-10.3 17.7-30.3 7.4-44.6s-30.3-17.7-44.6-7.4l-1.6 1.1c-32.1 22.9-76 19.3-103.8-8.6C74 372 74 321 105.5 289.5L217.7 177.2c31.5-31.5 82.5-31.5 114 0c27.9 27.9 31.5 71.8 8.6 103.9l-1.1 1.6c-10.3 14.4-6.9 34.4 7.4 44.6s34.4 6.9 44.6-7.4l1.1-1.6C433.5 260.8 427 182 377 132c-56.5-56.5-148-56.5-204.5 0L60.2 244.3z"
-            />
-          </svg>
-        </h2>
-        <p class="small-txt">Пакет для поддержки отрисовки на OpenGL.</p>
-      </div>
-      <div class="packet">
-        <h2 class="small-header">
-          xengine.audio
-          <svg
-            class="link-svg"
-            title="Получить"
-            onclick="window.open('xengine.audio.zip');"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 640 512"
-          >
-            <!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
-            <path
-              d="M579.8 267.7c56.5-56.5 56.5-148 0-204.5c-50-50-128.8-56.5-186.3-15.4l-1.6 1.1c-14.4 10.3-17.7 30.3-7.4 44.6s30.3 17.7 44.6 7.4l1.6-1.1c32.1-22.9 76-19.3 103.8 8.6c31.5 31.5 31.5 82.5 0 114L422.3 334.8c-31.5 31.5-82.5 31.5-114 0c-27.9-27.9-31.5-71.8-8.6-103.8l1.1-1.6c10.3-14.4 6.9-34.4-7.4-44.6s-34.4-6.9-44.6 7.4l-1.1 1.6C206.5 251.2 213 330 263 380c56.5 56.5 148 56.5 204.5 0L579.8 267.7zM60.2 244.3c-56.5 56.5-56.5 148 0 204.5c50 50 128.8 56.5 186.3 15.4l1.6-1.1c14.4-10.3 17.7-30.3 7.4-44.6s-30.3-17.7-44.6-7.4l-1.6 1.1c-32.1 22.9-76 19.3-103.8-8.6C74 372 74 321 105.5 289.5L217.7 177.2c31.5-31.5 82.5-31.5 114 0c27.9 27.9 31.5 71.8 8.6 103.9l-1.1 1.6c-10.3 14.4-6.9 34.4 7.4 44.6s34.4 6.9 44.6-7.4l1.1-1.6C433.5 260.8 427 182 377 132c-56.5-56.5-148-56.5-204.5 0L60.2 244.3z"
-            />
-          </svg>
-        </h2>
-        <p class="small-txt">Воспроизведение аудио.</p>
-      </div>
-      <div class="packet">
-        <h2 class="small-header">
-          xengine.io
-          <svg
-            class="link-svg"
-            title="Получить"
-            onclick="window.open('xengine.io.zip');"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 640 512"
-          >
-            <!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
-            <path
-              d="M579.8 267.7c56.5-56.5 56.5-148 0-204.5c-50-50-128.8-56.5-186.3-15.4l-1.6 1.1c-14.4 10.3-17.7 30.3-7.4 44.6s30.3 17.7 44.6 7.4l1.6-1.1c32.1-22.9 76-19.3 103.8 8.6c31.5 31.5 31.5 82.5 0 114L422.3 334.8c-31.5 31.5-82.5 31.5-114 0c-27.9-27.9-31.5-71.8-8.6-103.8l1.1-1.6c10.3-14.4 6.9-34.4-7.4-44.6s-34.4-6.9-44.6 7.4l-1.1 1.6C206.5 251.2 213 330 263 380c56.5 56.5 148 56.5 204.5 0L579.8 267.7zM60.2 244.3c-56.5 56.5-56.5 148 0 204.5c50 50 128.8 56.5 186.3 15.4l1.6-1.1c14.4-10.3 17.7-30.3 7.4-44.6s-30.3-17.7-44.6-7.4l-1.6 1.1c-32.1 22.9-76 19.3-103.8-8.6C74 372 74 321 105.5 289.5L217.7 177.2c31.5-31.5 82.5-31.5 114 0c27.9 27.9 31.5 71.8 8.6 103.9l-1.1 1.6c-10.3 14.4-6.9 34.4 7.4 44.6s34.4 6.9 44.6-7.4l1.1-1.6C433.5 260.8 427 182 377 132c-56.5-56.5-148-56.5-204.5 0L60.2 244.3z"
-            />
-          </svg>
-        </h2>
-        <p class="small-txt">Пакет для использования системных утилит.</p>
-      </div>
-      <div class="packet">
-        <h2 class="small-header">
-          xengine.rendering.vulkan
-          <svg
-            class="link-svg"
-            title="Получить"
-            onclick="window.open('xengine.rendering.vulkan.zip');"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 640 512"
-          >
-            <!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
-            <path
-              d="M579.8 267.7c56.5-56.5 56.5-148 0-204.5c-50-50-128.8-56.5-186.3-15.4l-1.6 1.1c-14.4 10.3-17.7 30.3-7.4 44.6s30.3 17.7 44.6 7.4l1.6-1.1c32.1-22.9 76-19.3 103.8 8.6c31.5 31.5 31.5 82.5 0 114L422.3 334.8c-31.5 31.5-82.5 31.5-114 0c-27.9-27.9-31.5-71.8-8.6-103.8l1.1-1.6c10.3-14.4 6.9-34.4-7.4-44.6s-34.4-6.9-44.6 7.4l-1.1 1.6C206.5 251.2 213 330 263 380c56.5 56.5 148 56.5 204.5 0L579.8 267.7zM60.2 244.3c-56.5 56.5-56.5 148 0 204.5c50 50 128.8 56.5 186.3 15.4l1.6-1.1c14.4-10.3 17.7-30.3 7.4-44.6s-30.3-17.7-44.6-7.4l-1.6 1.1c-32.1 22.9-76 19.3-103.8-8.6C74 372 74 321 105.5 289.5L217.7 177.2c31.5-31.5 82.5-31.5 114 0c27.9 27.9 31.5 71.8 8.6 103.9l-1.1 1.6c-10.3 14.4-6.9 34.4 7.4 44.6s34.4 6.9 44.6-7.4l1.1-1.6C433.5 260.8 427 182 377 132c-56.5-56.5-148-56.5-204.5 0L60.2 244.3z"
-            />
-          </svg>
-        </h2>
-        <p class="small-txt">Пакет для поддержки отрисовки на Vulkan.</p>
       </div>
       <div class="packet packet-create" onclick="window.open('upload.html');">
         <h2 class="nocopy">+</h2>
