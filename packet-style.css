@@ -1,0 +1,74 @@
+@media (prefers-color-scheme: dark) {
+  :root {
+    --noncontrast-color: black;
+    --packet-bg: #fff1;
+    color-scheme: dark;
+  }
+}
+@media (prefers-color-scheme: light) {
+  :root {
+    --noncontrast-color: white;
+    --packet-bg: #0001;
+    color-scheme: light;
+  }
+}
+.nocopy {
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -o-user-select: none;
+  user-select: none;
+}
+html {
+  scroll-behavior: smooth;
+}
+body {
+  margin: 20px;
+  font-family: Rubik;
+}
+.packet-holder {
+  margin-top: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.packet {
+  background: var(--packet-bg);
+  border-radius: 10px;
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-top: 0.5px;
+  padding-bottom: 7.5px;
+}
+.packet-create {
+  background: #f48136;
+  padding-top: 20px;
+  font-weight: normal;
+  color: var(--noncontrast-color);
+  cursor: pointer;
+}
+.link-svg {
+  width: 25px;
+  fill: gray;
+  margin-left: 10px;
+  cursor: pointer;
+}
+h1 {
+  font-size: 30px;
+}
+h2 {
+  font-size: 22px;
+}
+p {
+  font-size: 18px;
+}
+a {
+  color: #f48136;
+}
+.small-header {
+  font-size: 18px;
+}
+.small-txt {
+  font-size: 16px;
+}
