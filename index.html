@@ -23,6 +23,7 @@
     <!--Конец Open Graph тэгов-->
     <link href="packet-style.css" rel="stylesheet" />
     <script>
+      //JSON parsing.
       const json_src = "https://xanytka.ru/p/";
       var getJSON = function (url, callback) {
         var xhr = new XMLHttpRequest();
@@ -30,50 +31,188 @@
         xhr.responseType = "json";
         xhr.onload = function () {
           var status = xhr.status;
-          if (status === 200) {
-            callback(null, xhr.response);
-          } else {
-            callback(status, xhr.response);
-          }
+          if (status === 200) callback(null, xhr.response);
+          else callback(status, xhr.response);
         };
         xhr.send();
       };
       getJSON("packages.json", function (err, data) {
-        for (let i = 0; i < data.pkgs.length; i++) {
+        for (let i = 0; i <= data.pkgs.length; i++) {
           var holder = document.getElementsByClassName("packet-holder")[0];
           var packet = document.createElement("div");
           packet.classList.add("packet");
-          var title = document.createElement("h2");
-          title.textContent=data.pkgs[i].name;
-          title.classList.add("small-header");
-          var t_svg = document.createElement("img");
-          t_svg.classList.add("link-svg");
-          t_svg.src="download-solid.svg";
-          t_svg.onclick = function() {
-            window.open(json_src+data.pkgs[i].name+".zip");
-          };
-          title.appendChild(t_svg);
-          packet.appendChild(title);
-          var description = document.createElement("p");
-          description.textContent=data.pkgs[i].desc;
-          description.classList.add("small-txt");
-          packet.appendChild(description);
+          if (i == data.pkgs.length) {
+            packet.onclick = function () {
+              window.open("upload.html");
+            };
+            packet.classList.add("packet-create");
+            var title = document.createElement("h2");
+            title.textContent = "+";
+            title.classList.add("nocopy");
+            packet.appendChild(title);
+          } else {
+            packet.classList.add(data.pkgs[i].tag);
+            var title = document.createElement("h2");
+            title.textContent = data.pkgs[i].name;
+            title.classList.add("small-header");
+            title.onclick = function () {
+              window.open(json_src + data.pkgs[i].name + ".html");
+            };
+            var t_svg = document.createElement("img");
+            t_svg.classList.add("link-svg");
+            t_svg.classList.add("themed-ico");
+            t_svg.src = "download-solid.svg";
+            t_svg.onclick = function () {
+              window.open(json_src + data.pkgs[i].name + ".zip");
+            };
+            title.appendChild(t_svg);
+            packet.appendChild(title);
+            var description = document.createElement("p");
+            description.textContent = data.pkgs[i].desc;
+            description.classList.add("small-txt");
+            packet.appendChild(description);
+          }
           holder.appendChild(packet);
         }
       });
+      //JSON parsing.
+    </script>
+    <script>
+      //Search function.
+      var glob_tags = [];
+      function add_tag(tag) {
+        glob_tags.push(tag);
+      }
+      function remove_tag(tag) {
+        glob_tags = glob_tags.filter((e) => e !== tag);
+      }
+      function toggle_tag(tag) {
+        if (!glob_tags.includes(tag)) add_tag(tag);
+        else remove_tag(tag);
+        //TODO: Refresh URL with search params.
+        //const urlParams = new URLSearchParams(window.location.search);
+        //urlParams.set("tags", glob_tags.toString());
+        //window.location.search = urlParams;
+        search();
+      }
+      function search() {
+        var all_pkgs = document.getElementsByClassName("packet");
+        var pkgs = [].slice.call(all_pkgs);
+        var hidden = 0;
+        //Hide 'nothing found'.
+        document
+          .getElementsByClassName("packet-create")[1]
+          .classList.remove("hidden");
+        document
+          .getElementsByClassName("packet-notfound")[0]
+          .classList.add("hidden");
+        document
+          .getElementsByClassName("encourage-creation")[0]
+          .classList.add("hidden");
+        //Create filters.
+        var filters = [];
+        for (var j = 0; j < glob_tags.length; j++)
+          filters.push(RegExp(" " + glob_tags[j]));
+        //Go through all pkgs and check them by filters.
+        for (var i = 0; i < all_pkgs.length; i++) {
+          var element = all_pkgs[i];
+          if (element.className.indexOf("packet-create") !== -1) continue;
+          element.classList.add("hidden");
+          if (glob_tags.length === 0) {
+            element.classList.remove("hidden");
+            continue;
+          }
+          var add_to_list = true;
+          for (var j = 0; j < filters.length; j++) {
+            if (!filters[j].test(element.classList)) add_to_list = false;
+          }
+          if (add_to_list) element.classList.remove("hidden");
+          else hidden++;
+        }
+        //Check hidden pkg amount to display 'nothing found'.
+        if (hidden + 2 == all_pkgs.length) {
+          document
+            .getElementsByClassName("packet-create")[1]
+            .classList.add("hidden");
+          document
+            .getElementsByClassName("packet-notfound")[0]
+            .classList.remove("hidden");
+          document
+            .getElementsByClassName("encourage-creation")[0]
+            .classList.remove("hidden");
+        }
+      }
+      //Search function.
+    </script>
+    <script>
+      //Stylistic.
+      window.addEventListener("load", function () {
+        switch_theme();
+      });
+      var theme = 1;
+      var t_ls = localStorage.getItem("theme");
+      if (t_ls != null) theme = parseInt(t_ls);
+      function toggle_tag_btn(tag, el) {
+        if (el.className === "pkg-selector pkg-selector-act")
+          el.classList.remove("pkg-selector-act");
+        else el.classList.add("pkg-selector-act");
+        toggle_tag(tag);
+      }
+      function switch_theme() {
+        if (theme == 1) {
+          document.body.style.setProperty("--noncontrast-color", "black");
+          document.body.style.setProperty("--packet-bg", "#fff1");
+          document.body.style.setProperty("--invert_icons", 1);
+          document.body.style.setProperty("--body-color", "#121212");
+          document.body.style.setProperty("--text-color", "white");
+          theme = 0;
+        } else {
+          document.body.style.setProperty("--noncontrast-color", "white");
+          document.body.style.setProperty("--packet-bg", "#0001");
+          document.body.style.setProperty("--invert_icons", 0);
+          document.body.style.setProperty("--body-color", "white");
+          document.body.style.setProperty("--text-color", "black");
+          theme = 1;
+        }
+        localStorage.setItem("theme", (theme == 1 ? 0 : 1).toString());
+      }
     </script>
   </head>
   <body>
-    <h1>Пакеты для XEngine</h1>
+    <h1>
+      Пакеты для XEngine
+      <img
+        src="theme.svg"
+        class="themed-ico"
+        style="width: 25px; cursor: pointer"
+        onclick="switch_theme()"
+      />
+    </h1>
     <p>
-      Добро пожаловать в официальный сайт по дистрибуции пакетов
-      для XEngine.
+      Добро пожаловать в официальный сайт по дистрибуции пакетов для XEngine.
     </p>
-    <div class="packet-holder">
-      </div>
-      <div class="packet packet-create" onclick="window.open('upload.html');">
-        <h2 class="nocopy">+</h2>
-      </div>
+    <button onclick="toggle_tag_btn('audio', this)" class="pkg-selector">
+      Аудио
+    </button>
+    <button onclick="toggle_tag_btn('io', this)" class="pkg-selector">
+      IO
+    </button>
+    <button onclick="toggle_tag_btn('rendering', this)" class="pkg-selector">
+      Отображение
+    </button>
+    <button onclick="toggle_tag_btn('ui', this)" class="pkg-selector">
+      UI
+    </button>
+    <button onclick="toggle_tag_btn('other', this)" class="pkg-selector">
+      Другое
+    </button>
+    <p class="packet-notfound hidden">Ничего не найдено...</p>
+    <div
+      class="packet packet-create encourage-creation hidden"
+      onclick="window.open('upload.html');"
+    >
+      <h2 class="nocopy">Создать пакет</h2>
     </div>
+    <div class="packet-holder"></div>
   </body>
 </html>

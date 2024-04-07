@@ -1,6 +1,9 @@
 {"pkgs":[
-	{"name":"xengine.rendering.opengl", "desc":"Пакет для поддержки отрисовки на OpenGL."},
-	{"name":"xengine.audio", "desc":"Воспроизведение аудио."},
-	{"name":"xengine.io", "desc":"Пакет для использования системных утилит."},
-	{"name":"xengine.rendering.vulkan", "desc":"Пакет для поддержки отрисовки на Vulkan."}
+	{"name":"xe.rendering.opengl", "desc":"Пакет для поддержки отрисовки на OpenGL.", "tag":"rendering"},
+	{"name":"xe.audio", "desc":"Воспроизведение аудио.", "tag":"audio"},
+	{"name":"xe.io", "desc":"Пакет для использования системных утилит.", "tag":"io"},
+	{"name":"xe.rendering.vulkan", "desc":"Пакет для поддержки отрисовки на Vulkan.", "tag":"rendering"},
+	{"name":"xe.physics", "desc":"Пакет для поддержки нативной физики.", "tag":"other"},
+	{"name":"xe.ui", "desc":"Поддержка нативной отрисовки UI.", "tag":"ui"},
+	{"name":"xe.rendering.dx12", "desc":"Пакет для поддержки отрисовки на DirectX 12.", "tag":"rendering"}
 ]}
