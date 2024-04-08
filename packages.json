@@ -1,9 +1,9 @@
 {"pkgs":[
-	{"name":"xe.rendering.opengl", "desc":"Пакет для поддержки отрисовки на OpenGL.", "tag":"rendering"},
-	{"name":"xe.audio", "desc":"Воспроизведение аудио.", "tag":"audio"},
-	{"name":"xe.io", "desc":"Пакет для использования системных утилит.", "tag":"io"},
-	{"name":"xe.rendering.vulkan", "desc":"Пакет для поддержки отрисовки на Vulkan.", "tag":"rendering"},
-	{"name":"xe.physics", "desc":"Пакет для поддержки нативной физики.", "tag":"other"},
-	{"name":"xe.ui", "desc":"Поддержка нативной отрисовки UI.", "tag":"ui"},
-	{"name":"xe.rendering.dx12", "desc":"Пакет для поддержки отрисовки на DirectX 12.", "tag":"rendering"}
+	{"name":"fs.rendering.opengl", "desc":"Пакет для поддержки отрисовки на OpenGL.", "tag":"rendering"},
+	{"name":"fs.audio", "desc":"Воспроизведение аудио.", "tag":"audio"},
+	{"name":"fs.io", "desc":"Пакет для использования системных утилит.", "tag":"io"},
+	{"name":"fs.rendering.vulkan", "desc":"Пакет для поддержки отрисовки на Vulkan.", "tag":"rendering"},
+	{"name":"fs.physics", "desc":"Пакет для поддержки нативной физики.", "tag":"other"},
+	{"name":"fs.ui", "desc":"Поддержка нативной отрисовки UI.", "tag":"ui"},
+	{"name":"fs.rendering.dx12", "desc":"Пакет для поддержки отрисовки на DirectX 12.", "tag":"rendering"}
 ]}
