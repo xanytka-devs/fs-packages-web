@@ -58,14 +58,16 @@
             //title.onclick = function () {
             //  window.open(json_src + data.pkgs[i].name + ".html");
             //};
-            var t_svg = document.createElement("img");
-            t_svg.classList.add("link-svg");
-            t_svg.classList.add("themed-ico");
-            t_svg.src = "download-solid.svg";
-            t_svg.onclick = function () {
-              window.open(json_src + data.pkgs[i].name + ".zip");
-            };
-            title.appendChild(t_svg);
+            if(data.pkgs[i].available) {
+              var t_svg = document.createElement("img");
+              t_svg.classList.add("link-svg");
+              t_svg.classList.add("themed-ico");
+              t_svg.src = "download-solid.svg";
+              t_svg.onclick = function () {
+                window.open(json_src + data.pkgs[i].name + ".zip");
+              };
+              title.appendChild(t_svg);
+            }
             packet.appendChild(title);
             var description = document.createElement("p");
             description.textContent = data.pkgs[i].desc;
@@ -200,8 +202,11 @@
 	<button onclick="toggle_tag_btn('language', this)" class="pkg-selector">
       Язык
     </button>
+	<button onclick="toggle_tag_btn('physics', this)" class="pkg-selector">
+      Физика
+    </button>
     <button onclick="toggle_tag_btn('rendering', this)" class="pkg-selector">
-      Отображение
+      Отрисовка
     </button>
     <button onclick="toggle_tag_btn('ui', this)" class="pkg-selector">
       Интерфейс
