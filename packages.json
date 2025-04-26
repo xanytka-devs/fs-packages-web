@@ -4,6 +4,6 @@
 	{"name":"fs.phys.2d", "desc":"Поддержка 2Д физики.", "tag":"physics", "available": true},
 	{"name":"fs.phys.3d", "desc":"Поддержка 3Д физики.", "tag":"physics", "available": true},
 	{"name":"fs.ui", "desc":"Поддержка нативной отрисовки UI.", "tag":"ui", "available": true},
-	{"name":"imgui.utils", "desc":"Инструменты для ImGui.", "tag":"language", "available": true},
-	{"name":"openal", "desc":"Воспроизведение аудио через OpenAL.", "tag":"audio", "available": true},
+	{"name":"imgui.utils", "desc":"Инструменты для ImGui.", "tag":"utils", "available": true},
+	{"name":"openal", "desc":"Воспроизведение аудио через OpenAL.", "tag":"audio", "available": true}
 ]}
