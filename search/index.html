@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+    <title>Firesteel | Пакеты</title>
+    <!--Начало Open Graph тэгов-->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://xanytka.ru/p/" />
+    <meta property="og:site_name" content="Xanytka" />
+    <meta property="og:title" content="Поиск" />
+    <meta
+      property="og:description"
+      content="Официальный сайт по дистрибуции пакетов для Firesteel."
+    />
+    <meta property="og:locale" content="RU-ru" />
+    <!--Конец Open Graph тэгов-->
+    <link href="../style.css" rel="stylesheet" />
+    <script>
+      //JSON parsing.
+      const json_src = "https://xntk.ru/p/";
+      var getJSON = function (url, callback) {
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", url, true);
+        xhr.responseType = "json";
+        xhr.onload = function () {
+          var status = xhr.status;
+          if (status === 200) callback(null, xhr.response);
+          else callback(status, xhr.response);
+        };
+        xhr.send();
+      };
+      //JSON parsing.
+    </script>
+    <script>
+      //Search function.
+      var glob_tags = [];
+      function add_tag(tag) {
+        glob_tags.push(tag);
+      }
+      function remove_tag(tag) {
+        glob_tags = glob_tags.filter((e) => e !== tag);
+      }
+      function toggle_tag(tag) {
+        if (!glob_tags.includes(tag)) add_tag(tag);
+        else remove_tag(tag);
+        search();
+      }
+      function search(isInitSearch=false) {
+        var all_pkgs = document.getElementsByClassName("packet");
+        var pkgs = [].slice.call(all_pkgs);
+        var hidden = 0;
+        //Create filters.
+        var filters = [];
+        for (var j = 0; j < glob_tags.length; j++)
+          filters.push(RegExp(" " + glob_tags[j]));
+        let searchQuery = document.getElementById("searchbar").value.toLowerCase();
+        let versionQuery = document.getElementById("version-selector").value;
+        console.log(versionQuery);
+        //Go through all pkgs and check them by filters.
+        for (var i = 0; i < all_pkgs.length; i++) {
+          var element = all_pkgs[i];
+          if (element.className.indexOf("packet-create") !== -1) continue;
+          element.classList.add("hidden");
+          var add_to_list = true;
+          if(glob_tags.length > 0) {
+            for (var j = 0; j < filters.length; j++) {
+              if(!filters[j].test(element.classList)) add_to_list = false;
+            }
+          }
+          if(searchQuery.length>0) {
+            if(!element.getElementsByTagName("h2")[0].innerText.toLowerCase().includes(searchQuery))
+              add_to_list = false;
+          }
+          if(versionQuery != "none") {
+            if(!element.classList.toString().includes(versionQuery))
+              add_to_list = false;
+          }
+          if (add_to_list) element.classList.remove("hidden");
+          else hidden++;
+        }
+        //Check hidden pkg amount to display 'nothing found'.
+        if(document.getElementById("nothing-found")) {
+          if (hidden === all_pkgs.length)
+            document.getElementById("nothing-found").classList.remove("hidden");
+          else document.getElementById("nothing-found").classList.add("hidden");
+        }
+        if(!isInitSearch) {
+          //Refresh URL with search params.
+          const url = new URL(window.location.href);
+          url.searchParams.set('search', searchQuery);
+          url.searchParams.set('tags', glob_tags.toString());
+          url.searchParams.set('env', versionQuery.toString());
+          window.history.pushState({}, '', url);
+        }
+      }
+      window.addEventListener('load', (event) => {
+        const url = new URL(window.location.href);
+        if(url.toString().includes('?')) {
+          glob_tags = url.searchParams.get("tags").split("%2C");
+          document.getElementById("searchbar").value = url.searchParams.get("search");
+          for (let i = 0; i < glob_tags.length; i++) {
+            document.getElementById("sel-"+glob_tags[i]).classList.add("pkg-selector-act");
+          }
+          document.getElementById("version-selector").value = url.searchParams.get("env");
+          search(true);
+        }
+      });
+      //Search function.
+    </script>
+    <script>
+      getJSON("../packages.json", function (err, data) {
+        for (let i = 0; i <= data.pkgs.length; i++) {
+          var holder = document.getElementsByClassName("packet-holder")[0];
+          var packet = document.createElement("div");
+          packet.classList.add("packet");
+          packet.classList.add(data.pkgs[i].tag);
+          packet.classList.add(data.pkgs[i].env);
+          var ptitle = document.createElement("span");
+          ptitle.classList.add("packet-title");
+          var title = document.createElement("h2");
+          title.textContent = data.pkgs[i].name;
+          title.classList.add("small-header");
+          var author = document.createElement("p");
+          author.textContent = data.pkgs[i].author;
+          author.classList.add("author");
+          //title.onclick = function () {
+          //  window.open(json_src + data.pkgs[i].name + ".html");
+          //};
+          ptitle.appendChild(title);
+          ptitle.appendChild(author);
+          packet.appendChild(ptitle);
+          var description = document.createElement("span");
+          description.classList.add("small-txt");
+          var descriptionTxt = document.createElement("p");
+          descriptionTxt.textContent = data.pkgs[i].desc;
+          descriptionTxt.classList.add("small-txt");
+          var downloadB = document.createElement("button");
+          downloadB.classList.add("download");
+          downloadB.innerText="Скачать";
+          downloadB.onclick = function () {
+            window.open(json_src + data.pkgs[i].name + ".zip");
+          };
+          description.appendChild(descriptionTxt);
+          description.appendChild(downloadB);
+          packet.appendChild(description);
+          holder.appendChild(packet);
+        }
+      });
+    </script>
+    <script src="../theme.js"></script>
+    <script>
+      function toggleTagBtn(tag, el) {
+        if (el.className === "pkg-selector pkg-selector-act")
+          el.classList.remove("pkg-selector-act");
+        else el.classList.add("pkg-selector-act");
+        toggle_tag(tag);
+      }
+    </script>
+  </head>
+  <body onload="restoreThemePreference()">
+    <div id="sidebar">
+      <span
+        id="get-firesteel"
+        onclick="window.open('https://github.com/xanytka-devs/firesteel')"
+        style="display: flex;flex-direction: row;align-items: center;"
+        >
+        <span style="width: 70%;background: none;">
+          <p class="nocopy">Репозиторий</p>
+          <h2 class="nocopy">Firesteel</h2>
+        </span>
+        <img
+          src="../git.svg"
+          class="themed-ico nocopy"
+          style="width: 50px; cursor: pointer;margin-top: -8px;margin-left: -3px;"
+        />
+      </span>
+      <span id="tags">
+        <p class="nocopy">Категории</p>
+        <button id="sel-audio" onclick="toggleTagBtn('audio', this)" class="pkg-selector">
+          Аудио
+        </button>
+        <button id="sel-util" onclick="toggleTagBtn('util', this)" class="pkg-selector">
+          Утилиты
+        </button>
+        <button id="sel-lang" onclick="toggleTagBtn('lang', this)" class="pkg-selector">
+          Язык
+        </button>
+        <button id="sel-phys" onclick="toggleTagBtn('phys', this)" class="pkg-selector">
+          Физика
+        </button>
+        <button id="sel-render" onclick="toggleTagBtn('render', this)" class="pkg-selector">
+          Отрисовка
+        </button>
+        <button id="sel-ui" onclick="toggleTagBtn('ui', this)" class="pkg-selector">
+          Интерфейс
+        </button>
+        <button id="sel-other" onclick="toggleTagBtn('other', this)" class="pkg-selector">
+          Другое
+        </button>
+      </span>
+      <span>
+        <p class="nocopy">Версия среды</p>
+        <select id="version-selector" oninput="search()">
+          <option value="none"></option>
+          <option value="0.2.1">0.2.1</option>
+          <option value="0.2">0.2</option>
+        </select>
+      </span>
+    </div>
+    <div style="width: calc(100% - 13.5rem)">
+      <a style="font-weight: bold;color: var(--text-color);font-size: 2rem;text-decoration: none;" href="../index.html">Пакеты</a>
+      <img
+        src="../theme.svg"
+        id="theme-change-btn"
+        class="themed-ico nocopy"
+        style="width: 30px; cursor: pointer;position: absolute; right: 14.75rem;top: 20px;"
+        onclick="switchTheme()"
+      />
+      <select
+        id="color-scheme"
+        style="position: absolute; right: 17.15rem;top: 24px;">
+        <option value="system">system</option>
+        <option value="dark">dark</option>
+        <option value="light">light</option>
+        <option value="oled">oled</option>
+      </select>
+      <div style="display: flex;height: 40px;width: 100%;gap: 7.5px">
+        <img
+          src="../search.svg"
+          class="themed-ico nocopy"
+          style="width: 40px; cursor: pointer"
+          onclick="search()"
+        />
+        <input type="text" id="searchbar"
+          oninput="search()">
+      </div>
+      <div class="packet-holder"></div>
+      <div
+        id="nothing-found"
+        style="cursor: pointer;"
+        class="hidden"
+        onclick="window.open('../upload.html')">
+        <h2>Не нашли нужный пакет?</h2>
+        <h3>Создайте свой</h3>
+    </div>
+    </div>
+  </body>
+</html>

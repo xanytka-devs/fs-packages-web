@@ -3,12 +3,9 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap"
-      rel="stylesheet"
-    />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
     <title>Firesteel | Пакеты</title>
     <!--Начало Open Graph тэгов-->
     <meta property="og:type" content="website" />
@@ -21,206 +18,68 @@
     />
     <meta property="og:locale" content="RU-ru" />
     <!--Конец Open Graph тэгов-->
-    <link href="packet-style.css" rel="stylesheet" />
-    <script>
-      //JSON parsing.
-      const json_src = "https://xanytka.ru/p/";
-      var getJSON = function (url, callback) {
-        var xhr = new XMLHttpRequest();
-        xhr.open("GET", url, true);
-        xhr.responseType = "json";
-        xhr.onload = function () {
-          var status = xhr.status;
-          if (status === 200) callback(null, xhr.response);
-          else callback(status, xhr.response);
-        };
-        xhr.send();
-      };
-      getJSON("packages.json", function (err, data) {
-        for (let i = 0; i <= data.pkgs.length; i++) {
-          var holder = document.getElementsByClassName("packet-holder")[0];
-          var packet = document.createElement("div");
-          packet.classList.add("packet");
-          if (i == data.pkgs.length) {
-            packet.onclick = function () {
-              window.open("upload.html");
-            };
-            packet.classList.add("packet-create");
-            var title = document.createElement("h2");
-            title.textContent = "+";
-            title.classList.add("nocopy");
-            packet.appendChild(title);
-          } else {
-            packet.classList.add(data.pkgs[i].tag);
-            var title = document.createElement("h2");
-            title.textContent = data.pkgs[i].name;
-            title.classList.add("small-header");
-            //title.onclick = function () {
-            //  window.open(json_src + data.pkgs[i].name + ".html");
-            //};
-            if(data.pkgs[i].available) {
-              var t_svg = document.createElement("img");
-              t_svg.classList.add("link-svg");
-              t_svg.classList.add("themed-ico");
-              t_svg.src = "download-solid.svg";
-              t_svg.onclick = function () {
-                window.open(json_src + data.pkgs[i].name + ".zip");
-              };
-              title.appendChild(t_svg);
-            }
-            packet.appendChild(title);
-            var description = document.createElement("p");
-            description.textContent = data.pkgs[i].desc;
-            description.classList.add("small-txt");
-            packet.appendChild(description);
-          }
-          holder.appendChild(packet);
-        }
-      });
-      //JSON parsing.
-    </script>
-    <script>
-      //Search function.
-      var glob_tags = [];
-      function add_tag(tag) {
-        glob_tags.push(tag);
+    <link href="style.css" rel="stylesheet" />
+    <script src="theme.js"></script>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
       }
-      function remove_tag(tag) {
-        glob_tags = glob_tags.filter((e) => e !== tag);
+      #banner {
+        background: linear-gradient(180deg, transparent, var(--accent-color));
+        z-index: 0;
       }
-      function toggle_tag(tag) {
-        if (!glob_tags.includes(tag)) add_tag(tag);
-        else remove_tag(tag);
-        //TODO: Refresh URL with search params.
-        //const urlParams = new URLSearchParams(window.location.search);
-        //urlParams.set("tags", glob_tags.toString());
-        //window.location.search = urlParams;
-        search();
+      #unbanner {
+        background: linear-gradient(0deg, transparent, var(--accent-color));
+        z-index: 0;
       }
-      function search() {
-        var all_pkgs = document.getElementsByClassName("packet");
-        var pkgs = [].slice.call(all_pkgs);
-        var hidden = 0;
-        //Hide 'nothing found'.
-        document
-          .getElementsByClassName("packet-create")[1]
-          .classList.remove("hidden");
-        document
-          .getElementsByClassName("packet-notfound")[0]
-          .classList.add("hidden");
-        document
-          .getElementsByClassName("encourage-creation")[0]
-          .classList.add("hidden");
-        //Create filters.
-        var filters = [];
-        for (var j = 0; j < glob_tags.length; j++)
-          filters.push(RegExp(" " + glob_tags[j]));
-        //Go through all pkgs and check them by filters.
-        for (var i = 0; i < all_pkgs.length; i++) {
-          var element = all_pkgs[i];
-          if (element.className.indexOf("packet-create") !== -1) continue;
-          element.classList.add("hidden");
-          if (glob_tags.length === 0) {
-            element.classList.remove("hidden");
-            continue;
-          }
-          var add_to_list = true;
-          for (var j = 0; j < filters.length; j++) {
-            if (!filters[j].test(element.classList)) add_to_list = false;
-          }
-          if (add_to_list) element.classList.remove("hidden");
-          else hidden++;
-        }
-        //Check hidden pkg amount to display 'nothing found'.
-        if (hidden + 2 == all_pkgs.length) {
-          document
-            .getElementsByClassName("packet-create")[1]
-            .classList.add("hidden");
-          document
-            .getElementsByClassName("packet-notfound")[0]
-            .classList.remove("hidden");
-          document
-            .getElementsByClassName("encourage-creation")[0]
-            .classList.remove("hidden");
-        }
+      .packet {
+        z-index: -1;
       }
-      //Search function.
-    </script>
-    <script>
-      //Stylistic.
-      window.addEventListener("load", function () {
-        switch_theme();
-      });
-      var theme = 1;
-      var t_ls = localStorage.getItem("theme");
-      if (t_ls != null) theme = parseInt(t_ls);
-      function toggle_tag_btn(tag, el) {
-        if (el.className === "pkg-selector pkg-selector-act")
-          el.classList.remove("pkg-selector-act");
-        else el.classList.add("pkg-selector-act");
-        toggle_tag(tag);
+      #search-pg {
+        background: var(--body-color);
+        text-decoration: none;
+        padding: 0.8rem 2rem;
+        border-radius: 100px;
+        text-align: center;
       }
-      function switch_theme() {
-        if (theme == 1) {
-          document.body.style.setProperty("--noncontrast-color", "black");
-          document.body.style.setProperty("--packet-bg", "#fff1");
-          document.body.style.setProperty("--invert_icons", 1);
-          document.body.style.setProperty("--body-color", "#121212");
-          document.body.style.setProperty("--text-color", "white");
-          theme = 0;
-        } else {
-          document.body.style.setProperty("--noncontrast-color", "white");
-          document.body.style.setProperty("--packet-bg", "#0001");
-          document.body.style.setProperty("--invert_icons", 0);
-          document.body.style.setProperty("--body-color", "white");
-          document.body.style.setProperty("--text-color", "black");
-          theme = 1;
-        }
-        localStorage.setItem("theme", (theme == 1 ? 0 : 1).toString());
-      }
-    </script>
+    </style>
   </head>
-  <body>
-    <h1>
-      Пакеты для Firesteel
+  <body onload="restoreThemePreference()">
+    <div style="height: 100vh;">
       <img
         src="theme.svg"
-        class="themed-ico"
-        style="width: 25px; cursor: pointer"
-        onclick="switch_theme()"
+        id="theme-change-btn"
+        class="themed-ico nocopy"
+        style="width: 30px; cursor: pointer;position: absolute; right: 20px;top: 20px;"
+        onclick="switchTheme()"
       />
-    </h1>
-    <p>
-      Добро пожаловать в официальный сайт по дистрибуции пакетов для Firesteel.
-    </p>
-    <button onclick="toggle_tag_btn('audio', this)" class="pkg-selector">
-      Аудио
-    </button>
-    <button onclick="toggle_tag_btn('utils', this)" class="pkg-selector">
-      Утилиты
-    </button>
-	<button onclick="toggle_tag_btn('language', this)" class="pkg-selector">
-      Язык
-    </button>
-	<button onclick="toggle_tag_btn('physics', this)" class="pkg-selector">
-      Физика
-    </button>
-    <button onclick="toggle_tag_btn('rendering', this)" class="pkg-selector">
-      Отрисовка
-    </button>
-    <button onclick="toggle_tag_btn('ui', this)" class="pkg-selector">
-      Интерфейс
-    </button>
-    <button onclick="toggle_tag_btn('other', this)" class="pkg-selector">
-      Другое
-    </button>
-    <p class="packet-notfound hidden">Ничего не найдено...</p>
-    <div
-      class="packet packet-create encourage-creation hidden"
-      onclick="window.open('upload.html');"
-    >
-      <h2 class="nocopy">Создать пакет</h2>
+      <select
+        id="color-scheme"
+        style="position: absolute; right: 17.15rem;top: 24px;">
+        <option value="system">system</option>
+        <option value="dark">dark</option>
+        <option value="light">light</option>
+        <option value="oled">oled</option>
+      </select>
+      <div style="height: 100%;">
+        <div
+          style="display: flex;align-items: center;justify-content: center;height: 100%;flex-direction: column;"
+          id="banner">
+          <span>
+            <h1 style="margin-top: 0;text-align: center;font-size: 5rem;margin-bottom: 0;">Firesteel Пакеты</h1>
+            <p style="text-align: center;font-size: 2rem;">Официальный сайт по дистрибуции пакетов для Firesteel</p>
+          </span>
+          <a href="search/" id="search-pg">
+            <span style="display: flex;gap: 7px;">
+              <svg width="1.1rem" height="1.1rem" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" fill="none">
+                <path fill="var(--accent-color)" fill-rule="evenodd" d="M4 9a5 5 0 1110 0A5 5 0 014 9zm5-7a7 7 0 104.2 12.6.999.999 0 00.093.107l3 3a1 1 0 001.414-1.414l-3-3a.999.999 0 00-.107-.093A7 7 0 009 2z"/>
+              </svg>
+              Искать
+            </span>
+          </a>
+        </div>
+      </div>
     </div>
-    <div class="packet-holder"></div>
   </body>
 </html>

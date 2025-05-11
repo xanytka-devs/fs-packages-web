@@ -3,12 +3,9 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap"
-      rel="stylesheet"
-    />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
     <title>Публикация | Firesteel</title>
     <!--Начало Open Graph тэгов-->
     <meta property="og:type" content="website" />
@@ -21,10 +18,26 @@
     />
     <meta property="og:locale" content="RU-ru" />
     <!--Конец Open Graph тэгов-->
-    <link href="packet-style.css" rel="stylesheet" />
+    <link href="style.css" rel="stylesheet" />
+    <script src="theme.js"></script>
   </head>
-  <body>
-    <h1>Пакеты для Firesteel</h1>
+  <body onload="restoreThemePreference()">
+    <img
+        src="theme.svg"
+        id="theme-change-btn"
+        class="themed-ico nocopy"
+        style="width: 30px; cursor: pointer;position: absolute; right: 20px;top: 20px;"
+        onclick="switchTheme()"
+      />
+      <select
+        id="color-scheme"
+        style="position: absolute; right: 17.15rem;top: 24px;">
+        <option value="system">system</option>
+        <option value="dark">dark</option>
+        <option value="light">light</option>
+        <option value="oled">oled</option>
+      </select>
+    <a style="font-weight: bold;color: var(--text-color);font-size: 2rem;text-decoration: none;" href="index.html">Пакеты</a>
     <p>
       Добро пожаловать в официальный сайт по дистрибуции пакетов для Firesteel.
     </p>
