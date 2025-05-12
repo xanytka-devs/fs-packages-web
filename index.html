@@ -43,6 +43,30 @@
         border-radius: 100px;
         text-align: center;
       }
+      @media (min-width: 940px) {
+        h1 {
+          font-size: 5rem;
+        }
+        p {
+          font-size: 2rem
+        }
+      }
+      @media (max-width: 940px), (min-width: 430px) {
+        h1 {
+          font-size: 3.5rem;
+        }
+        p {
+          font-size: 1.5rem
+        }
+      }
+      @media (max-width: 430px) {
+        h1 {
+          font-size: 3.5rem;
+        }
+        p {
+          font-size: 1.5rem
+        }
+      }
     </style>
   </head>
   <body onload="restoreThemePreference()">
@@ -67,8 +91,8 @@
           style="display: flex;align-items: center;justify-content: center;height: 100%;flex-direction: column;"
           id="banner">
           <span>
-            <h1 style="margin-top: 0;text-align: center;font-size: 5rem;margin-bottom: 0;">Firesteel Пакеты</h1>
-            <p style="text-align: center;font-size: 2rem;">Официальный сайт по дистрибуции пакетов для Firesteel</p>
+            <h1 style="margin-top: 0;text-align: center;margin-bottom: 0;">Firesteel Пакеты</h1>
+            <p style="text-align: center;">Официальный сайт по дистрибуции пакетов для Firesteel</p>
           </span>
           <a href="search/" id="search-pg">
             <span style="display: flex;gap: 7px;">

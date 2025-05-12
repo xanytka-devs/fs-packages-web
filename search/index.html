@@ -144,6 +144,14 @@
           downloadB.onclick = function () {
             window.open(json_src + data.pkgs[i].name + ".zip");
           };
+          var downloadSvg = document.createElement("img");
+          downloadSvg.src = "../download-solid.svg";
+          downloadSvg.classList.add("themed-ico");
+          downloadSvg.classList.add("nocopy");
+          downloadSvg.style.width = "30px";
+          downloadSvg.style.cursor = "pointer";
+          downloadSvg.style.marginTop = "-8px";
+          downloadB.appendChild(downloadSvg);
           description.appendChild(descriptionTxt);
           description.appendChild(downloadB);
           packet.appendChild(description);
@@ -159,23 +167,44 @@
         else el.classList.add("pkg-selector-act");
         toggle_tag(tag);
       }
+      function toggleFilters() {
+        let el = document.getElementById("sidebar");
+        let b = document.getElementById("mainbody");
+        if (el.className === "sidebar-minimized") {
+          el.classList.remove("sidebar-minimized");
+          el.classList.add("sidebar-maximized");
+          b.classList.add("mainbody-minimized");
+        } else {
+          el.classList.add("sidebar-minimized");
+          el.classList.remove("sidebar-maximized");
+          b.classList.remove("mainbody-minimized");
+        }
+      }
     </script>
   </head>
-  <body onload="restoreThemePreference()">
+  <body onload="restoreThemePreference();toggleFilters()">
     <div id="sidebar">
-      <span
-        id="get-firesteel"
-        onclick="window.open('https://github.com/xanytka-devs/firesteel')"
-        style="display: flex;flex-direction: row;align-items: center;"
-        >
-        <span style="width: 70%;background: none;">
-          <p class="nocopy">Репозиторий</p>
-          <h2 class="nocopy">Firesteel</h2>
+      <span style="display: flex;flex-direction: row;gap: 5px;padding-bottom: 0;">
+        <span
+          id="get-firesteel"
+          onclick="window.open('https://github.com/xanytka-devs/firesteel')"
+          style="display: flex;flex-direction: row;align-items: center;"
+          >
+          <span style="width: 70%;background: none;">
+            <p class="nocopy">Репозиторий</p>
+            <h2 class="nocopy">Firesteel</h2>
+          </span>
+          <img
+            src="../git.svg"
+            class="themed-ico nocopy"
+            style="width: 50px; cursor: pointer;margin-top: -10px;"
+          />
         </span>
         <img
-          src="../git.svg"
-          class="themed-ico nocopy"
-          style="width: 50px; cursor: pointer;margin-top: -8px;margin-left: -3px;"
+            src="../filter.svg"
+            class="themed-ico nocopy mobile-filters"
+            style="width: 30px; cursor: pointer;"
+            onclick="toggleFilters()"
         />
       </span>
       <span id="tags">
@@ -211,15 +240,23 @@
         </select>
       </span>
     </div>
-    <div style="width: calc(100% - 13.5rem)">
+    <div id="mainbody">
       <a style="font-weight: bold;color: var(--text-color);font-size: 2rem;text-decoration: none;" href="../index.html">Пакеты</a>
-      <img
-        src="../theme.svg"
-        id="theme-change-btn"
-        class="themed-ico nocopy"
-        style="width: 30px; cursor: pointer;position: absolute; right: 14.75rem;top: 20px;"
-        onclick="switchTheme()"
-      />
+      <span id="btns-near-sidebar">
+        <img
+          src="../theme.svg"
+          id="theme-change-btn"
+          class="themed-ico nocopy"
+          style="width: 30px; cursor: pointer;"
+          onclick="switchTheme()"
+        />
+        <img
+          src="../filter.svg"
+          class="themed-ico nocopy mobile-filters"
+          style="width: 30px; cursor: pointer;"
+          onclick="toggleFilters()"
+        />
+      </span>
       <select
         id="color-scheme"
         style="position: absolute; right: 17.15rem;top: 24px;">
