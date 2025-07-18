@@ -76,6 +76,7 @@
               add_to_list = false;
           }
           if(versionQuery != "none") {
+            console.log(element.classList.toString().includes(versionQuery));
             if(!element.classList.toString().includes(versionQuery))
               add_to_list = false;
           }
@@ -97,23 +98,25 @@
           window.history.pushState({}, '', url);
         }
       }
-      window.addEventListener('load', (event) => {
+      function parseURL() {
         const url = new URL(window.location.href);
         if(url.toString().includes('?')) {
-          glob_tags = url.searchParams.get("tags").split("%2C");
           document.getElementById("searchbar").value = url.searchParams.get("search");
-          for (let i = 0; i < glob_tags.length; i++) {
-            document.getElementById("sel-"+glob_tags[i]).classList.add("pkg-selector-act");
+          if(url.searchParams.get("tags")!="") {
+            glob_tags = url.searchParams.get("tags").split("%2C");
+            for (let i = 0; i < glob_tags.length; i++) {
+              document.getElementById("sel-"+glob_tags[i]).classList.add("pkg-selector-act");
+            }
           }
           document.getElementById("version-selector").value = url.searchParams.get("env");
           search(true);
         }
-      });
+      }
       //Search function.
     </script>
     <script>
       getJSON("../packages.json", function (err, data) {
-        for (let i = 0; i <= data.pkgs.length; i++) {
+        for (let i = 0; i < data.pkgs.length; i++) {
           var holder = document.getElementsByClassName("packet-holder")[0];
           var packet = document.createElement("div");
           packet.classList.add("packet");
@@ -157,6 +160,7 @@
           packet.appendChild(description);
           holder.appendChild(packet);
         }
+        parseURL();
       });
     </script>
     <script src="../theme.js"></script>
@@ -236,7 +240,7 @@
         <select id="version-selector" oninput="search()">
           <option value="none"></option>
           <option value="0.2.1">0.2.1</option>
-          <option value="0.2">0.2</option>
+          <option value="0.2.0">0.2.0</option>
         </select>
       </span>
     </div>
@@ -283,7 +287,7 @@
         onclick="window.open('https://firesteel.readthedocs.io/ru/latest/tutorials/packages/')">
         <h2>Не нашли нужный пакет?</h2>
         <h3>Создайте свой</h3>
-    </div>
+      </div>
     </div>
   </body>
 </html>

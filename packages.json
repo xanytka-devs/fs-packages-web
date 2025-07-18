@@ -1,8 +1,0 @@
-{"pkgs":[
-	{"name":"fs.lua","desc":"Запуск скриптов Lua.","tag":"lang","author":"Xanytka Devs","env":0.2},
-	{"name":"fs.phys.2d","desc":"Поддержка 2Д физики.","tag":"phys","author":"Xanytka Devs","env":0.2},
-	{"name":"fs.phys.3d","desc":"Поддержка 3Д физики.","tag":"phys","author":"Xanytka Devs","env":0.2},
-	{"name":"fs.ui","desc":"Поддержка нативной отрисовки UI.","tag":"ui","author":"Xanytka Devs","env":0.2},
-	{"name":"imgui.utils","desc":"Инструменты для ImGui.","tag":"util","author":"Xanytka Devs","env":0.2},
-	{"name":"openal","desc":"Воспроизведение аудио через OpenAL.","tag":"audio","author":"Xanytka Devs","env":0.2}
-]}
