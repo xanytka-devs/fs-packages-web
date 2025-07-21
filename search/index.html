@@ -59,7 +59,6 @@
           filters.push(RegExp(" " + glob_tags[j]));
         let searchQuery = document.getElementById("searchbar").value.toLowerCase();
         let versionQuery = document.getElementById("version-selector").value;
-        console.log(versionQuery);
         //Go through all pkgs and check them by filters.
         for (var i = 0; i < all_pkgs.length; i++) {
           var element = all_pkgs[i];
@@ -76,7 +75,6 @@
               add_to_list = false;
           }
           if(versionQuery != "none") {
-            console.log(element.classList.toString().includes(versionQuery));
             if(!element.classList.toString().includes(versionQuery))
               add_to_list = false;
           }
@@ -121,7 +119,9 @@
           var packet = document.createElement("div");
           packet.classList.add("packet");
           packet.classList.add(data.pkgs[i].tag);
-          packet.classList.add(data.pkgs[i].env);
+          let envs=data.pkgs[i].env.split(' ');
+          for(let e=0;e<envs.length;e++)
+            packet.classList.add(envs[e]);
           var ptitle = document.createElement("span");
           ptitle.classList.add("packet-title");
           var title = document.createElement("h2");
